@@ -5,6 +5,7 @@ import java.util.Scanner;
 
 import br.ufrpe.so.simuladores.ntfs.entity.Arquivo;
 import br.ufrpe.so.simuladores.ntfs.entity.Bloco;
+import br.ufrpe.so.simuladores.ntfs.entity.Volume;
 
 public class SimuladorNTFS {
 
@@ -19,11 +20,16 @@ public class SimuladorNTFS {
 	 *            tamanho do arquivo cuja lista de blocos é retornada.
 	 * @return ponteiro para a lista de blocos do arquivo criado.
 	 */
-	private ArrayList<Bloco> criaArquivo(int tam) {
-		Arquivo arq = new Arquivo();
+	private ArrayList<Bloco> criaArquivo(int tam, String nomeArquivo, Volume volume) {
+		Arquivo arq = new Arquivo(nomeArquivo, volume);
 		// cria os blocos do arquivo
 		for (int i = 1; i <= tam; i++) {
-			
+			Bloco bloco = new Bloco();
+			if(i == 1) {
+				bloco.setNomeBloco("bloco 1");
+			} else {
+				bloco.setNomeBloco("bloco " + i);
+			}
 		}
 		
 		return ( new ArrayList<Bloco>() );
