@@ -5,8 +5,8 @@ import java.io.IOException;
 
 public class Bloco {
 	/* Arquivo do qual este bloco faz parte. */ 
-	private String nomeArquivo; 
-	private String nomeBloco;
+	public String nomeArquivo; 
+	public String nome;
 	boolean disponivel;
 	
 	public Bloco() {
@@ -15,23 +15,19 @@ public class Bloco {
 	
 	public Bloco(String nomeArquivo, String nomeBloco) {
 		this.nomeArquivo = nomeArquivo;
-		this.nomeBloco = nomeBloco;
+		this.nome = nomeBloco;
 	}
 	
 	public File criaBloco() throws IOException {
-		File f = new File("D:\\eclipse-workspace\\MiniSimuladorSistemaArquivosNTFS\\arquivos\\" + nomeBloco + ".arq");
+		File f = new File("D:\\eclipse-workspace\\MiniSimuladorSistemaArquivosNTFS\\arquivos\\" + nome + ".arq");
 		return f;
-	}
-
-	public void setNomeBloco(String nomeBloco) {
-		this.nomeBloco = nomeBloco;
 	}
 
 	public void aloca(String nomeArquivo, String nomeBloco) {
 		if (this.disponivel) {
 			this.disponivel = false;
 			this.nomeArquivo = nomeArquivo;
-			this.nomeBloco = nomeBloco;
+			this.nome = nomeBloco;
 		}
 	}
 }

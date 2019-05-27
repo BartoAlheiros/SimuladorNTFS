@@ -1,53 +1,70 @@
 package br.ufrpe.so.simuladores.ntfs.entity;
 
+import java.util.ArrayList;
+
 public class Volume {
 	String nomeVolume;
-	Bloco[] blocos;
+	public Bloco[] blocos;
+	private int blocosLivres;
+
+	public Volume() {
+		
+	}
 	
 	/**/
 	public Volume(String nomeVolume, int tamListaBlocos) {
 		this.nomeVolume = nomeVolume;
 		blocos = new Bloco[tamListaBlocos];
+		/* inicializa os blocos no array */ 
+		for (int i = 0; i < blocos.length; i++) {
+			Bloco b = new Bloco();
+			b.nome = "bloco " + i;
+			b.nomeArquivo = " - ";
+			b.disponivel = true;
+			blocos[i] = b;
+		}
+		/* inicializa os blocos livres. Como o Volume acabou de ser criado
+		 * nenhum bloco está ocupado. Logo os blocos livres são todos os blocos. 
+		 * Considerando que os blocos serão de 1KB, então se o usuário entrar com tamanho 100
+		 * teremos 100 blocos de 1KB cada. E, inicialmente, todos livres.*/
+		this.blocosLivres = tamListaBlocos;
 	}
 
-	public Bloco[] getBlocsDisp() {
-		Bloco[] disponiveis = null;
+	public void aloca(ArrayList<Bloco> blocos, Arquivo arq) {
+		int alocados = 0;
 		
-		for (int i = 0; i < blocos.length; i++) {
-			if (blocos[i].disponivel) {
-				disponiveis = addListaDisp(disponiveis, blocos[i]);
-			}
-		}
-		return null;
-	}
-	
-	/**
-	 * Atualiza lista de blocos disponíveis.
-	 * 
-	 * @param listaAtual
-	 *            Ponteiro para a lista de blocos disponíveis no momento.
-	          
-	 * @return ponteiro para a lista de blocos ainda disponíveis no volume.
-	 */
-	public Bloco[] addListaDisp(Bloco[] listaAtual, Bloco novoBloco) {
-		Bloco[] novaLista = null;
-		
-		if (listaAtual == null) {
-			novaLista = new Bloco[1];
-		}else {
-			novaLista = new Bloco[listaAtual.length + 1];
-		}
-		
-		for (int i = 0; i < novaLista.length; i++) {
-			if (i <= listaAtual.length) {
-				novaLista[i] = listaAtual[i];
-			}else {
-				novaLista[i] = novoBloco;
+		for (int i = 0; i < this.blocos.length; i++) {
+			if (this.blocos[i].disponivel && alocados < blocos.size()) {
+				
+				this.blocos[i].disponivel = false;
+				this.blocos[i].nomeArquivo = arq.nomeArquivo;
+				alocados++;
+				blocosLivres--;
 			}
 			
 		}
 		
-		return novaLista;
+	}
+
+	public boolean temEspaco(int tamanho) {
+		if (tamanho <= blocosLivres) {
+			return true;
+		}
+		
+		return false;
+		
+	}
+
+	public void desaloca(String nomeArq) {
+		for (int i = 0; i < this.blocos.length; i++) {
+			if (this.blocos[i].nomeArquivo.equals(nomeArq)) {
+				
+				this.blocos[i].disponivel = true;
+				this.blocos[i].nomeArquivo = "-";
+				blocosLivres++;
+			}
+			
+		}
 	}
 
 }
